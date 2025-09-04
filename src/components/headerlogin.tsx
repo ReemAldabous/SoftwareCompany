@@ -101,7 +101,7 @@ function ResponsiveAppBar() {
                  <Link to="/employees" style={{textDecoration:'none'}}> <Typography sx={{ textAlign: 'center' }}>Employess</Typography></Link>
               </MenuItem>
               <MenuItem key={"developers"} onClick={handleCloseNavMenu} >
-              <Typography sx={{ textAlign: 'center' }}>Developers</Typography>
+              <Link to="/developers" style={{textDecoration:'none'}}> <Typography sx={{ textAlign: 'center' }}>Developers</Typography></Link>
             </MenuItem>
               
             </Menu>
@@ -143,13 +143,14 @@ function ResponsiveAppBar() {
               >
                 Employess
               </Button></Link>
+               <Link to="/developers" style={{textDecoration:'none'}}>
               <Button
                 key={"developers"}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2,color:'rgba(247, 251, 253, 1)', display: 'block' , fontSize:'19px' , marginRight:'10px', textTransform:'none'}}
               >
                 Developers
-              </Button>
+              </Button></Link>
             
           </Box>
           <Box sx={{ flexGrow: 0 }}>

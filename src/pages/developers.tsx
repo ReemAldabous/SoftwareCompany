@@ -3,10 +3,6 @@ import axios from "axios";
 import {
   Container,
   Typography,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
   TextField,
   CircularProgress,
   Grid,
@@ -15,14 +11,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Paper
-} from "@mui/material";
-import {
-
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
+  Paper,
+  Button
 } from "@mui/material";
 import { Edit, Save, Cancel } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
@@ -31,47 +21,45 @@ import { useCookies } from "react-cookie";
 import ResponsiveAppBar from '../components/headerlogin';
 import Footer from '../components/footer';
 
-interface Employee {
+interface Developer {
   id: string;
   fullName: string;
-  role: string;
   hiringDate: string;
   birthdate: string;
   salary: string;
 }
 
-const EmployeeManager: React.FC = () => {
+const DevelopersManager: React.FC = () => {
   const [cookies] = useCookies(["token", "companyId"]);
-  const API_URL = `http://localhost:5243/companies/${cookies.companyId}/employees`;
+  const API_URL = `http://localhost:5243/companies/${cookies.companyId}/developers`;
 
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [developers, setDevelopers] = useState<Developer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState<Omit<Employee, "id">>({
+  const [formData, setFormData] = useState<Omit<Developer, "id">>({
     fullName: "",
-    role: "",
     hiringDate: "",
     birthdate: "",
     salary: ""
   });
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editing, setEditing] = useState({});
+   const [editing, setEditing] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const fetchEmployees = async () => {
+  const fetchDevelopers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get<Employee[]>(API_URL, { withCredentials: true });
-      setEmployees(response.data);
+      const response = await axios.get<Developer[]>(API_URL, { withCredentials: true });
+      setDevelopers(response.data);
     } catch {
-      toast.error("فشل في جلب الموظفين");
+      toast.error("فشل في جلب المطورين");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchEmployees();
+    fetchDevelopers();
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,18 +70,14 @@ const EmployeeManager: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingId) return;
-
+    
     setIsSubmitting(true);
     try {
-      console.log(formData)
-       console.log(editingId)
-        console.log(editing)
-      const {accountId, companyId}=editing
-      
-      await axios.put(`${API_URL}/${editingId}`, {...formData,accountId,companyId} , {withCredentials:true});
-      toast.success("تم تحديث بيانات الموظف بنجاح");
+       const {accountId, companyId}=editing
+      await axios.put(`${API_URL}/${editingId}`, {...formData,accountId, companyId } ,{withCredentials:true});
+      toast.success("تم تحديث بيانات المطور بنجاح");
       handleCloseDialog();
-      await fetchEmployees();
+      await fetchDevelopers();
     } catch {
       toast.error("حدث خطأ أثناء تحديث البيانات");
     } finally {
@@ -101,16 +85,15 @@ const EmployeeManager: React.FC = () => {
     }
   };
 
-  const handleEdit = (employee: Employee) => {
+  const handleEdit = (dev: Developer) => {
     setFormData({
-      fullName: employee.fullName,
-      role: employee.role,
-      hiringDate: employee.hiringDate,
-      birthdate: employee.birthdate,
-      salary: employee.salary,
+      fullName: dev.fullName,
+      hiringDate: dev.hiringDate,
+      birthdate: dev.birthdate,
+      salary: dev.salary,
     });
-    setEditingId(employee.id);
-    setEditing(employee)
+    setEditingId(dev.id);
+     setEditing(dev)
     setDialogOpen(true);
   };
 
@@ -126,40 +109,37 @@ const EmployeeManager: React.FC = () => {
         <ToastContainer position="top-right" autoClose={3000} rtl />
 
         <Typography variant="h4" gutterBottom>
-          إدارة الموظفين
+          إدارة المطورين
         </Typography>
 
         {loading ? (
           <Box textAlign="center" my={5}>
             <CircularProgress />
           </Box>
-        ) : employees.length === 0 ? (
+        ) : developers.length === 0 ? (
           <Typography variant="body1" color="text.secondary" align="center">
-            لا يوجد موظفون لعرضهم
+            لا يوجد مطورون لعرضهم
           </Typography>
         ) : (
           <Grid container spacing={3}>
-            {employees.map((emp) => (
-              <Grid item xs={12} sm={6} md={4} key={emp.id}>
+            {developers.map((dev) => (
+              <Grid item xs={12} sm={6} md={4} key={dev.id}>
                 <Paper elevation={3} sx={{ p: 2 }}>
-                  <Typography variant="h6">{emp.fullName}</Typography>
+                  <Typography variant="h6">{dev.fullName}</Typography>
                   <Typography variant="body2" color="text.secondary">
-                    الدور: {emp.role}
+                    تاريخ التعيين: {dev.hiringDate}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    تاريخ التعيين: {emp.hiringDate}
+                    تاريخ الميلاد: {dev.birthdate}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    تاريخ الميلاد: {emp.birthdate}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    الراتب: {emp.salary} ريال
+                    الراتب: {dev.salary} ريال
                   </Typography>
                   <Box textAlign="right" mt={2}>
                     <Button
                       variant="outlined"
                       startIcon={<Edit />}
-                      onClick={() => handleEdit(emp)}
+                      onClick={() => handleEdit(dev)}
                     >
                       تعديل
                     </Button>
@@ -172,7 +152,7 @@ const EmployeeManager: React.FC = () => {
 
         {/* Dialog for Editing */}
         <Dialog open={dialogOpen} onClose={handleCloseDialog} fullWidth maxWidth="sm">
-          <DialogTitle>تعديل بيانات الموظف</DialogTitle>
+          <DialogTitle>تعديل بيانات المطور</DialogTitle>
           <DialogContent>
             <form onSubmit={handleSubmit} id="edit-form">
               <TextField
@@ -184,26 +164,6 @@ const EmployeeManager: React.FC = () => {
                 margin="normal"
                 required
               />
-         
-                    <FormControl
-                        variant="standard"
-                        sx={{ minWidth: 120 }}
-                        fullWidth
-                        required
-                      >
-                        <InputLabel>Role</InputLabel>
-                        <Select
-                          name="role"
-                          value={formData.role}
-                          onChange={handleInputChange}
-                          label="Role"
-                        >
-                          <MenuItem value="employee">Employee</MenuItem>
-                          <MenuItem value="employee_manager">Employee Manager</MenuItem>
-                          <MenuItem value="project_manager">Project Manager</MenuItem>
-                          <MenuItem value="developer">Developer</MenuItem>
-                        </Select>
-                      </FormControl>
               <TextField
                 fullWidth
                 type="date"
@@ -259,4 +219,4 @@ const EmployeeManager: React.FC = () => {
   );
 };
 
-export default EmployeeManager;
+export default DevelopersManager;
