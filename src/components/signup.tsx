@@ -87,9 +87,9 @@ const Dialogsignup = ({ open, handleClose }: any) => {
      
       console.log(form);
     } catch (err: any) {
-      if (err.response.status === 422) {
+      
         seterror("unexcpected error" );
-      }
+        setload(false)
 
       console.log(err);
     }

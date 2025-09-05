@@ -2,7 +2,6 @@ import {
   Card, 
   CardContent, 
   Typography, 
-  Button, 
   CardActions, 
   Box,
   Chip,
@@ -10,8 +9,7 @@ import {
   IconButton,
   Collapse,
   Divider,
-  Tooltip,
-  Fade
+  Tooltip
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -20,11 +18,12 @@ import {
   Edit,
   Delete,
   CalendarToday,
-  Person,
   ArrowRightAlt,
   ExpandMore,
-  Task,
-  MoreVert
+  Info,
+  CheckCircle,
+  Cancel,
+  HourglassEmpty
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
@@ -43,124 +42,133 @@ function ProjectCard({ project, onDelete, onEdit }) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  const statusColors = {
-    'created': 'success',
-    'canceled' :'warning',
-    'done': 'default'
-    
+  const statusMap = {
+    created: { label: "Created", color: "info", icon: <HourglassEmpty fontSize="small" /> },
+    canceled: { label: "Canceled", color: "warning", icon: <Cancel fontSize="small" /> },
+    done: { label: "Done", color: "success", icon: <CheckCircle fontSize="small" /> },
   };
+
+  const status = statusMap[project.status] || { label: "Unknown", color: "default", icon: null };
 
   return (
     <>
       <motion.div
-        whileHover={{ y: -5 }}
-        transition={{ type: "spring", stiffness: 300 }}
+        whileHover={{ y: -6, scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 250 }}
       >
         <Card 
           sx={{ 
-            minWidth: 300,
-            borderRadius: 2,
-            boxShadow: hovered ? 6 : 3,
+            minWidth: 340,
+            borderRadius: 5,
+            boxShadow: hovered ? "0px 8px 24px rgba(0,0,0,0.12)" : "0px 4px 12px rgba(0,0,0,0.08)",
+            backdropFilter: "blur(10px)",
             transition: 'all 0.3s ease',
-            position: 'relative',
-            overflow: 'visible'
+            overflow: 'hidden',
+            background: "linear-gradient(145deg, #ffffff 60%, #f7fbff)"
           }}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          {/* Status Ribbon */}
-          <Box sx={{
-            position: 'absolute',
-            top: 16,
-            marginRight:"10px",
-            right: -0,
-            zIndex: 1
-          }}>
-            <Chip 
-              label={project.status}
-              color={statusColors[project.status] || 'default'}
-              size="small"
-              sx={{ 
-                
-                fontWeight: 'bold',
-                boxShadow: 2,
-                px: 1
-              }}
-            />
-          </Box>
-
-          <CardContent 
-            onClick={() => navigate(`/projects/${project.id}`)} 
+          {/* Header with Avatar */}
+          <Box 
             sx={{ 
-              cursor: 'pointer',
-              pb: expanded ? 0 : '16px !important'
+              background: "linear-gradient(135deg, #48abc9, #2e7896)",
+              color: "white",
+              px: 2,
+              py: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
             }}
           >
-            <Box display="flex" alignItems="center" mb={1}>
-              <Task color="primary" sx={{ mr: 1 }} />
-              <Typography 
-                variant="h6" 
+            <Box display="flex" alignItems="center" gap={1.5}>
+              <Avatar 
                 sx={{ 
-                  fontWeight: 600,
-                  color: theme => theme.palette.primary.main
+                  bgcolor: "rgba(255,255,255,0.9)", 
+                  color: "primary.main", 
+                  fontWeight: "bold" 
                 }}
               >
+                {project.projectName.charAt(0).toUpperCase()}
+              </Avatar>
+              <Typography variant="h6" sx={{ fontWeight: 700 }}>
                 {project.projectName}
               </Typography>
             </Box>
+            <Chip 
+              icon={status.icon}
+              label={status.label}
+              color={status.color}
+              size="small"
+              sx={{ fontWeight: "bold", px: 0.5 }}
+            />
+          </Box>
 
-            <Box display="flex" alignItems="center" mb={1}>
-              <CalendarToday fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
+          {/* Card Body */}
+          <CardContent 
+            onClick={() => navigate(`/projects/${project.id}`)} 
+            sx={{ cursor: 'pointer', pb: expanded ? 0 : 2 }}
+          >
+            {/* Dates */}
+            <Box 
+              display="flex" 
+              alignItems="center" 
+              justifyContent="space-between" 
+              mb={1}
+              sx={{ bgcolor: "rgba(72,171,201,0.08)", p: 1.2, borderRadius: 2 }}
+            >
+              <Box display="flex" alignItems="center" gap={1.5}>
+                <CalendarToday fontSize="small" sx={{ color: "primary.main" }} />
+                <Typography variant="body2" color="text.primary" fontWeight={500}>
+                  Start: {project.startDate}
+                </Typography>
+              </Box>
               <Typography variant="body2" color="text.secondary">
-                {project.startDate} <ArrowRightAlt fontSize="small" sx={{ mx: 0.5, verticalAlign: 'middle' }} /> {project.endDate}
+                <ArrowRightAlt fontSize="small" sx={{ verticalAlign: "middle" }} /> 
+              </Typography>
+              <Typography variant="body2" color="text.primary" fontWeight={500}>
+                End: {project.endDate}
               </Typography>
             </Box>
 
-        
-
+            {/* Expandable Content */}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Divider sx={{ my: 2 }} />
-            
-              <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                {project.description || "No description available."}
+              </Typography>
+
+              <Box display="flex" flexWrap="wrap" gap={1}>
                 <Chip 
                   avatar={<Avatar>P</Avatar>}
                   label={`${project.projectPoints} points`}
                   size="small"
+                  color="info"
+                  variant="outlined"
                 />
-            
               </Box>
             </Collapse>
           </CardContent>
 
-          <CardActions sx={{ pt: 0, justifyContent: 'space-between' }}>
+          {/* Actions */}
+          <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
             <Box>
-              <Tooltip title="تعديل" arrow TransitionComponent={Fade}>
-                <IconButton 
-                  size="small" 
-                  color="primary" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setEditMode(true);
-                  }}
-                >
+              <Tooltip title="View details" arrow>
+                <IconButton size="small" color="info" onClick={() => navigate(`/projects/${project.id}`)}>
+                  <Info fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit" arrow>
+                <IconButton size="small" color="primary" onClick={() => setEditMode(true)}>
                   <Edit fontSize="small" />
                 </IconButton>
               </Tooltip>
-              
-              <Tooltip title="حذف" arrow TransitionComponent={Fade}>
-                <IconButton 
-                  size="small" 
-                  color="error"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(project.id);
-                  }}
-                >
+              <Tooltip title="Delete" arrow>
+                <IconButton size="small" color="error" onClick={() => onDelete(project.id)}>
                   <Delete fontSize="small" />
                 </IconButton>
               </Tooltip>
             </Box>
-
             <ExpandButton
               expanded={expanded}
               onClick={(e) => {
@@ -176,6 +184,7 @@ function ProjectCard({ project, onDelete, onEdit }) {
         </Card>
       </motion.div>
 
+      {/* Edit Modal */}
       {editMode && (
         <ProjectForm
           initialData={project}

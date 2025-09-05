@@ -1,184 +1,169 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import v from '/images/logo.png'
-import g from '/images/logout1.png'
-import {  Link } from 'react-router-dom';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import Avatar from "@mui/material/Avatar";
+import { Link, useLocation } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import logo from "/images/logo.png";
 
-
-
-
-
-
-const settings = ['Logout'];
+const settings = ["Logout"];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const location = useLocation();
 
-  const handleOpenNavMenu = (event:any) => {
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event:any) => {
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  const navItems = [
+    { label: "Projects", path: "/projects" },
+    { label: "Employees", path: "/employees" },
+    { label: "Developers", path: "/developers" },
+  ];
+
   return (
-    <AppBar position="static" sx={{backgroundColor:'#48abc9ff',color:'coral' }}>
+    <AppBar
+      position="static"
+      sx={{
+        background: "linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)",
+        color: "white",
+        boxShadow: 4,
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-      
+          {/* Logo + Title (Desktop) */}
+          <Avatar src={logo} alt="Logo" sx={{ mr: 1, display: { xs: "none", md: "flex" } }} />
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component="div"
             sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              mr: 4,
+              display: { xs: "none", md: "flex" },
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'rgba(251, 251, 251, 1)',
-              textDecoration: 'none',
-              fontSize:'25px',
-              textShadow:' 10px #f1f4faff'
-
-            
+              letterSpacing: ".1rem",
+              color: "white",
+              textDecoration: "none",
             }}
           >
             Software Company
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon             sx={{width:'50px' , height:'50px' , color:'rgba(239, 244, 246, 1)'}} />
+          {/* Mobile Menu Icon */}
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
+              <MenuIcon />
             </IconButton>
-            <Menu  
-              id="menu-appbar"
+            <Menu
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' ,color:'coral'} }}
+              PaperProps={{
+                sx: {
+                  background: "#1976d2",
+                  color: "white",
+                  borderRadius: 2,
+                },
+              }}
             >
-            
-                <MenuItem key={"projects"} onClick={handleCloseNavMenu} >
-                    <Link to="/projects" style={{textDecoration:'none'}}><Typography sx={{ textAlign: 'center'  }}>Projects</Typography></Link> 
+              {navItems.map((item) => (
+                <MenuItem
+                  key={item.path}
+                  onClick={handleCloseNavMenu}
+                  component={Link}
+                  to={item.path}
+                >
+                  <Typography textAlign="center">{item.label}</Typography>
                 </MenuItem>
-                <MenuItem key={"employee"} onClick={handleCloseNavMenu} >
-                 <Link to="/employees" style={{textDecoration:'none'}}> <Typography sx={{ textAlign: 'center' }}>Employess</Typography></Link>
-              </MenuItem>
-              <MenuItem key={"developers"} onClick={handleCloseNavMenu} >
-              <Link to="/developers" style={{textDecoration:'none'}}> <Typography sx={{ textAlign: 'center' }}>Developers</Typography></Link>
-            </MenuItem>
-              
+              ))}
             </Menu>
           </Box>
-         
+
+          {/* Title (Mobile) */}
+          <Avatar src={logo} alt="Logo" sx={{ mr: 1, display: { xs: "flex", md: "none" } }} />
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-                textShadow:'10px #dae1f1ff',
+              display: { xs: "flex", md: "none" },
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'rgb(242, 247, 248)',
-              textDecoration: 'none',
+              letterSpacing: ".1rem",
             }}
           >
-        
             Software Company
-
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex'  , marginLeft : '350px'   } }}>
-           
-                <Link to="/projects" style={{textDecoration:'none'}}> <Button
-                key={"projects"}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2,color:'rgba(255, 255, 255, 1)', display: 'block' , fontSize:'19px' , marginRight:'10px', textTransform:'none'}}
-              >
-                projects
-              </Button></Link>
-               <Link to="/employees" style={{textDecoration:'none'}}><Button
-                key={"employes"}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2,color:'rgba(255, 255, 255, 1)', display: 'block' , fontSize:'19px' , marginRight:'10px', textTransform:'none'}}
-              >
-                Employess
-              </Button></Link>
-               <Link to="/developers" style={{textDecoration:'none'}}>
+
+          {/* Desktop Nav */}
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, ml: 4 }}>
+            {navItems.map((item) => (
               <Button
-                key={"developers"}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2,color:'rgba(247, 251, 253, 1)', display: 'block' , fontSize:'19px' , marginRight:'10px', textTransform:'none'}}
+                key={item.path}
+                component={Link}
+                to={item.path}
+                sx={{
+                  my: 2,
+                  mx: 1,
+                  color: location.pathname === item.path ? "#ffeb3b" : "white",
+                  backgroundColor: location.pathname === item.path ? "rgba(255,255,255,0.2)" : "transparent",
+                  borderRadius: 3,
+                  px: 3,
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.2)",
+                  },
+                }}
               >
-                Developers
-              </Button></Link>
-            
+                {item.label}
+              </Button>
+            ))}
           </Box>
+
+          {/* User Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Account">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                
-                <img src={g} alt=""  style={{width:'35px'}}/>
+                <Avatar sx={{ bgcolor: "secondary.main" }}>
+                  <LogoutIcon />
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
+              sx={{ mt: "45px" }}
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              PaperProps={{
+                sx: {
+                  borderRadius: 2,
+                },
+              }}
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                  <Typography>{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

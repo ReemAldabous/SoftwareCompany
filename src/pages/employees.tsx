@@ -15,21 +15,25 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Paper
-} from "@mui/material";
-import {
-
-  MenuItem,
-  Select,
+  Avatar,
   FormControl,
+  Select,
+  MenuItem,
   InputLabel,
 } from "@mui/material";
-import { Edit, Save, Cancel } from "@mui/icons-material";
+import {
+  Edit,
+  Save,
+  Cancel,
+  Work,
+  CalendarToday,
+  MonetizationOn,
+} from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCookies } from "react-cookie";
-import ResponsiveAppBar from '../components/headerlogin';
-import Footer from '../components/footer';
+import ResponsiveAppBar from "../components/headerlogin";
+import Footer from "../components/footer";
 
 interface Employee {
   id: string;
@@ -51,7 +55,7 @@ const EmployeeManager: React.FC = () => {
     role: "",
     hiringDate: "",
     birthdate: "",
-    salary: ""
+    salary: "",
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editing, setEditing] = useState({});
@@ -61,10 +65,12 @@ const EmployeeManager: React.FC = () => {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const response = await axios.get<Employee[]>(API_URL, { withCredentials: true });
+      const response = await axios.get<Employee[]>(API_URL, {
+        withCredentials: true,
+      });
       setEmployees(response.data);
     } catch {
-      toast.error("فشل في جلب الموظفين");
+      toast.error("Failed to fetch employees");
     } finally {
       setLoading(false);
     }
@@ -74,7 +80,9 @@ const EmployeeManager: React.FC = () => {
     fetchEmployees();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -85,17 +93,17 @@ const EmployeeManager: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      console.log(formData)
-       console.log(editingId)
-        console.log(editing)
-      const {accountId, companyId}=editing
-      
-      await axios.put(`${API_URL}/${editingId}`, {...formData,accountId,companyId} , {withCredentials:true});
-      toast.success("تم تحديث بيانات الموظف بنجاح");
+      const { accountId, companyId } = editing as any;
+      await axios.put(
+        `${API_URL}/${editingId}`,
+        { ...formData, accountId, companyId },
+        { withCredentials: true }
+      );
+      toast.success("Employee updated successfully");
       handleCloseDialog();
       await fetchEmployees();
     } catch {
-      toast.error("حدث خطأ أثناء تحديث البيانات");
+      toast.error("Error updating employee data");
     } finally {
       setIsSubmitting(false);
     }
@@ -110,7 +118,7 @@ const EmployeeManager: React.FC = () => {
       salary: employee.salary,
     });
     setEditingId(employee.id);
-    setEditing(employee)
+    setEditing(employee);
     setDialogOpen(true);
   };
 
@@ -119,14 +127,24 @@ const EmployeeManager: React.FC = () => {
     setEditingId(null);
   };
 
+  const getInitial = (name: string) => {
+    return name ? name.charAt(0).toUpperCase() : "?";
+  };
+
   return (
     <>
       <ResponsiveAppBar />
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <ToastContainer position="top-right" autoClose={3000} rtl />
+      <Container maxWidth="lg" sx={{ py: 5 }}>
+        <ToastContainer position="top-right" autoClose={3000} />
 
-        <Typography variant="h4" gutterBottom>
-          إدارة الموظفين
+        <Typography
+          variant="h4"
+          gutterBottom
+          fontWeight="bold"
+          textAlign="center"
+          color="primary"
+        >
+          👨‍💼 Employee Management
         </Typography>
 
         {loading ? (
@@ -135,79 +153,136 @@ const EmployeeManager: React.FC = () => {
           </Box>
         ) : employees.length === 0 ? (
           <Typography variant="body1" color="text.secondary" align="center">
-            لا يوجد موظفون لعرضهم
+            No employees to display
           </Typography>
         ) : (
-          <Grid container spacing={3}>
+          <Grid container spacing={4}>
             {employees.map((emp) => (
               <Grid item xs={12} sm={6} md={4} key={emp.id}>
-                <Paper elevation={3} sx={{ p: 2 }}>
-                  <Typography variant="h6">{emp.fullName}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    الدور: {emp.role}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    تاريخ التعيين: {emp.hiringDate}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    تاريخ الميلاد: {emp.birthdate}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    الراتب: {emp.salary} ريال
-                  </Typography>
-                  <Box textAlign="right" mt={2}>
+                <Card
+                  sx={{
+                    borderRadius: 4,
+                    boxShadow: 4,
+                    border: "1px solid #1976d2",
+                    backgroundColor: "#fff",
+                    transition: "0.3s",
+                    "&:hover": {
+                      boxShadow: 6,
+                      transform: "translateY(-4px)",
+                    },
+                  }}
+                >
+                  <CardContent sx={{ textAlign: "center" }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: "primary.main",
+                        width: 70,
+                        height: 70,
+                        mx: "auto",
+                        mb: 2,
+                        fontSize: 28,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {getInitial(emp.fullName)}
+                    </Avatar>
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      fontWeight="bold"
+                      color="primary"
+                    >
+                      {emp.fullName}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" mb={1}>
+                      <Work sx={{ mr: 1, fontSize: 18 }} />
+                      Role: {emp.role}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" mb={1}>
+                      <CalendarToday sx={{ mr: 1, fontSize: 18 }} />
+                      Hiring Date: {emp.hiringDate}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" mb={1}>
+                      🎂 Birthdate: {emp.birthdate}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="success.main"
+                      fontWeight="bold"
+                    >
+                      <MonetizationOn sx={{ mr: 1, fontSize: 18 }} />
+                      {emp.salary} SAR
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={{ justifyContent: "center", pb: 2 }}>
                     <Button
-                      variant="outlined"
+                      variant="contained"
+                      color="primary"
                       startIcon={<Edit />}
                       onClick={() => handleEdit(emp)}
+                      sx={{
+                        borderRadius: 3,
+                        px: 3,
+                        textTransform: "none",
+                      }}
                     >
-                      تعديل
+                      Edit
                     </Button>
-                  </Box>
-                </Paper>
+                  </CardActions>
+                </Card>
               </Grid>
             ))}
           </Grid>
         )}
 
         {/* Dialog for Editing */}
-        <Dialog open={dialogOpen} onClose={handleCloseDialog} fullWidth maxWidth="sm">
-          <DialogTitle>تعديل بيانات الموظف</DialogTitle>
+        <Dialog
+          open={dialogOpen}
+          onClose={handleCloseDialog}
+          fullWidth
+          maxWidth="sm"
+        >
+          <DialogTitle
+            sx={{ fontWeight: "bold", color: "primary.main", textAlign: "center" }}
+          >
+            ✏️ Edit Employee
+          </DialogTitle>
           <DialogContent>
             <form onSubmit={handleSubmit} id="edit-form">
               <TextField
                 fullWidth
-                label="الاسم الكامل"
+                label="Full Name"
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleInputChange}
                 margin="normal"
                 required
               />
-         
-                    <FormControl
-                        variant="standard"
-                        sx={{ minWidth: 120 }}
-                        fullWidth
-                        required
-                      >
-                        <InputLabel>Role</InputLabel>
-                        <Select
-                          name="role"
-                          value={formData.role}
-                          onChange={handleInputChange}
-                          label="Role"
-                        >
-                          <MenuItem value="employee">Employee</MenuItem>
-                          <MenuItem value="employee_manager">Employee Manager</MenuItem>
-                          <MenuItem value="project_manager">Project Manager</MenuItem>
-                          <MenuItem value="developer">Developer</MenuItem>
-                        </Select>
-                      </FormControl>
+
+              <FormControl
+                variant="outlined"
+                sx={{ minWidth: 120, mt: 2 }}
+                fullWidth
+                required
+              >
+                <InputLabel>Role</InputLabel>
+                <Select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  label="Role"
+                >
+                  <MenuItem value="employee">Employee</MenuItem>
+                  <MenuItem value="employee_manager">Employee Manager</MenuItem>
+                  <MenuItem value="project_manager">Project Manager</MenuItem>
+                  <MenuItem value="developer">Developer</MenuItem>
+                </Select>
+              </FormControl>
+
               <TextField
                 fullWidth
                 type="date"
-                label="تاريخ التعيين"
+                label="Hiring Date"
                 name="hiringDate"
                 value={formData.hiringDate}
                 onChange={handleInputChange}
@@ -218,7 +293,7 @@ const EmployeeManager: React.FC = () => {
               <TextField
                 fullWidth
                 type="date"
-                label="تاريخ الميلاد"
+                label="Birthdate"
                 name="birthdate"
                 value={formData.birthdate}
                 onChange={handleInputChange}
@@ -228,7 +303,7 @@ const EmployeeManager: React.FC = () => {
               />
               <TextField
                 fullWidth
-                label="الراتب"
+                label="Salary"
                 name="salary"
                 value={formData.salary}
                 onChange={handleInputChange}
@@ -237,9 +312,14 @@ const EmployeeManager: React.FC = () => {
               />
             </form>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} startIcon={<Cancel />} color="secondary">
-              إلغاء
+          <DialogActions sx={{ px: 3, pb: 2, justifyContent: "center" }}>
+            <Button
+              onClick={handleCloseDialog}
+              startIcon={<Cancel />}
+              color="secondary"
+              sx={{ borderRadius: 3 }}
+            >
+              Cancel
             </Button>
             <Button
               type="submit"
@@ -247,8 +327,9 @@ const EmployeeManager: React.FC = () => {
               variant="contained"
               startIcon={<Save />}
               disabled={isSubmitting}
+              sx={{ borderRadius: 3 }}
             >
-              حفظ التعديلات
+              Save Changes
               {isSubmitting && <CircularProgress size={20} sx={{ ml: 1 }} />}
             </Button>
           </DialogActions>

@@ -111,11 +111,7 @@ export default function WelcomePage() {
                 Welcome to Our Project Management Platform
               </Typography>
             </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 1 }}>
-              <Typography variant="h6" color="text.secondary" sx={{ mt: 2, maxWidth: 700, mx: 'auto' }}>
-                Streamline your operations, empower your teams
-              </Typography>
-            </motion.div>
+          
           </Box>
 
           {/* Services Section */}

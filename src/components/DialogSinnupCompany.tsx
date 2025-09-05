@@ -6,19 +6,31 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import axios from "axios";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 
-const DialogsignupCompany = ({ open, handleClose }: any) => {
-  const nav = useNavigate();
+interface DialogSignupCompanyProps {
+  open: boolean;
+  handleClose: () => void;
+}
+interface CompanyForm {
+  password: string; // كلمة المرور للشركة
+  companyname: string; // اسم الشركة
+  role: string; // الدور في النظام، هنا افتراضياً "company"
+  username: string; // اسم المستخدم
+  establishdate: string; // تاريخ تأسيس الشركة (YYYY-MM-DD)
+  description: string; // وصف الشركة
+  accountId?: string; // معرف الحساب (اختياري، يتم توليده بعد التسجيل)
+}
+
+const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleClose }: any) => {
   const [companyid, setcompanyid] = React.useState("");
-  const [form, setform] = React.useState({
+  console.log(companyid)
+  const [form, setform] = React.useState<CompanyForm>({
     password: "",
     companyname: "",
     role: "company",
@@ -27,21 +39,21 @@ const DialogsignupCompany = ({ open, handleClose }: any) => {
     description: "",
   });
 
-  const [cookies, setCookie, removeCookie] = useCookies(['token', 'companyId', 'role']);
   
-  function handlechange(e: any) {
+  
+  function handlechange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setform({ ...form, [e.target.name]: e.target.value });
   }
   const [error, seterror] = useState(false);
   const [load, setload] = useState(false);
   const { password, role, username } = form;
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setload(true);
     try {
       console.log(form);
-      const r1 = await axios.post("http://localhost:5290/signup", {
+      const r1 = await axios.post<{ accountId: string }>("http://localhost:5290/signup", {
         password,
         username,
         role,
@@ -59,7 +71,7 @@ const DialogsignupCompany = ({ open, handleClose }: any) => {
       await axios.put("http://localhost:5290/"+id+"/set_company_id/"+company_id, null)
 
       const r5 = await axios.put("http://localhost:5290/" + id + "/set_info_id/" + company_id);
-
+      console.log(r5)
       console.log(r2);
       setload(false);
 
@@ -92,7 +104,7 @@ const DialogsignupCompany = ({ open, handleClose }: any) => {
           borderRadius: "5PX 80PX 2PX 0PX ",
         }}
       >
-        Create CompanyAccount
+        Create Company Account
       </DialogTitle>
       <DialogContent>
         <DialogContentText sx={{ marginTop: "15px" }}></DialogContentText>
