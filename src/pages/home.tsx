@@ -51,7 +51,7 @@ const Home = () => {
               variant="h3"
               sx={{
                 fontWeight: 700,
-                fontSize: { xs: '2rem', md: '3rem' },
+                fontSize: { xs: '2.2rem', md: '3.2rem' },
                 mb: 2,
                 background: 'linear-gradient(to right, #1976d2, #E44C98)',
                 WebkitBackgroundClip: 'text',
@@ -64,8 +64,8 @@ const Home = () => {
             <Typography
               variant="h6"
               sx={{
-                color: 'text.secondary',
-                fontSize: '1.1rem',
+                color: '#3286c7ff',
+                fontSize: '1.3rem',
                 mb: 2,
               }}
             >
@@ -73,7 +73,7 @@ const Home = () => {
             </Typography>
 
             <Typography sx={{ color: 'text.secondary', mb: 4 }}>
-             This portal provides the foundation for managing the company's project portfolio effectively. From here, you can access real-time dashboards for live performance tracking, collaborate with cross-functional teams, manage resources efficiently, and monitor Key Performance Indicators (KPIs) to ensure all efforts are aligned with our shared strategic objectives.
+             This portal provides the foundation for managing the company's project effectively. From here, you can access  dashboards for  collaborate with cross-functional teams, manage projects efficiently, And delivering it on time.
             </Typography>
 
             <Button

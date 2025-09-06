@@ -30,8 +30,6 @@ function App() {
       <Route path="/developers/:id" element={<DeveloperDetails/>} /> 
 
       
-     
-    
      </Routes>
      
     </>
