@@ -12,7 +12,6 @@ import {
   LinearProgress,
   InputAdornment,
   IconButton,
-  Typography,
   Fade
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +24,7 @@ import {
   Lock,
   Close
 } from "@mui/icons-material";
-import p from "/images/personn.png";
+
 
 interface DialogLoginProps {
   open: boolean;

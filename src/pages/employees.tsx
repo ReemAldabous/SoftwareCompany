@@ -275,7 +275,7 @@ const EmployeeManager: React.FC = () => {
                   <MenuItem value="employee">Employee</MenuItem>
                   <MenuItem value="employee_manager">Employee Manager</MenuItem>
                   <MenuItem value="project_manager">Project Manager</MenuItem>
-                  <MenuItem value="developer">Developer</MenuItem>
+                 
                 </Select>
               </FormControl>
 

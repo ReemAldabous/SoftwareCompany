@@ -76,7 +76,7 @@ const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleC
       setload(false);
 
      
-    } catch (err: any) {
+    } catch (err:unknown) {
       if (err.response.status === 422) {
         seterror(true);
       }

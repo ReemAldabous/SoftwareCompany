@@ -17,6 +17,7 @@ import {
   Button,
   Avatar,
 } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 import { Edit, Save, Cancel, Code, CalendarToday, MonetizationOn } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -33,6 +34,7 @@ interface Developer {
 }
 
 const DevelopersManager: React.FC = () => {
+  const navigate = useNavigate();
   const [cookies] = useCookies(["token", "companyId"]);
   const API_URL = `http://localhost:5243/companies/${cookies.companyId}/developers`;
 
@@ -50,6 +52,7 @@ const DevelopersManager: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const fetchDevelopers = async () => {
+    
     try {
       setLoading(true);
       const response = await axios.get<Developer[]>(API_URL, {
@@ -156,7 +159,7 @@ const DevelopersManager: React.FC = () => {
                     },
                   }}
                 >
-                  <CardContent sx={{ textAlign: "center" }}>
+                  <CardContent sx={{ textAlign: "center" ,cursor: 'pointer' }}  onClick={() => navigate(`/developers/${dev.id}`)} >
                     <Avatar
                       sx={{
                         bgcolor: "primary.main",
@@ -222,7 +225,7 @@ const DevelopersManager: React.FC = () => {
           >
             ✏️ Edit Developer
           </DialogTitle>
-          <DialogContent>
+          <DialogContent >
             <form onSubmit={handleSubmit} id="edit-form">
               <TextField
                 fullWidth
