@@ -156,13 +156,14 @@ const EmployeeManager: React.FC = () => {
             No employees to display
           </Typography>
         ) : (
-          <Grid container spacing={4}>
+          <Grid container spacing={4} sx={{background:'#f1faffff'}}>
             {employees.map((emp) => (
               <Grid item xs={12} sm={6} md={4} key={emp.id}>
                 <Card
                   sx={{
                     borderRadius: 4,
                     boxShadow: 4,
+                    ml:2,
                     border: "1px solid #1976d2",
                     backgroundColor: "#fff",
                     transition: "0.3s",

@@ -8,6 +8,8 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import { NavLink } from "react-router";
+
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
@@ -82,7 +84,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseNavMenu}
               PaperProps={{
                 sx: {
-                  background: "#1976d2",
+                  background: "#72a8dfff",
                   color: "white",
                   fontSize:'30px',
                   fontFamily:'fantasy',
@@ -148,7 +150,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Account">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: "secondary.main" }}>
+                <Avatar sx={{ bgcolor: "#ea74b7ff" }}>
                   <LogoutIcon />
                 </Avatar>
               </IconButton>
@@ -166,7 +168,13 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography>{setting}</Typography>
+                  <NavLink
+                      to="/"
+                      style={{
+                        textDecoration: "none",
+                      }}
+                    >
+                  <Typography>{setting}</Typography></NavLink>
                 </MenuItem>
               ))}
             </Menu>

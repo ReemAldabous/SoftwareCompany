@@ -103,7 +103,7 @@ function Project() {
     <>
       <ResponsiveAppBar />
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-        <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+        <Paper elevation={3} sx={{ p: 3, mb: 3 , bgcolor:'#b4cce4ff' }}>
           <Box 
             display="flex" 
             justifyContent="space-between" 
@@ -111,20 +111,20 @@ function Project() {
             mb={3}
           >
             <Typography variant="h4" component="h1" fontWeight="bold" sx={{color:"blue"}}>
-              Projects Dashboard
+              Projects Mangment
             </Typography>
             <Button 
               variant="contained" 
               startIcon={<Add />}
               onClick={() => setOpenForm(true)}
               sx={{
-                backgroundColor: 'primary.main',
+                backgroundColor: '#ed315dff',
                 '&:hover': {
                   backgroundColor: 'primary.dark',
                 }
               }}
             >
-              Add New Project
+              Add Project
             </Button>
           </Box>
 

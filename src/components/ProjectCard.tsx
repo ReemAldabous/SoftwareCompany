@@ -46,6 +46,7 @@ function ProjectCard({ project, onDelete, onEdit }) {
     created: { label: "Created", color: "info", icon: <HourglassEmpty fontSize="small" /> },
     canceled: { label: "Canceled", color: "warning", icon: <Cancel fontSize="small" /> },
     done: { label: "Done", color: "success", icon: <CheckCircle fontSize="small" /> },
+     started: { label: "Started", color: "info", icon: <CheckCircle fontSize="small" /> },
   };
 
   const status = statusMap[project.status] || { label: "Unknown", color: "default", icon: null };

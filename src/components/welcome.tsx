@@ -189,7 +189,7 @@ export default function WelcomePage() {
   const bubbles = [
     { size: 180, position: { top: '5%', left: '3%' }, color: '#1976d2', opacity: 0.15, delay: 0 },
     { size: 120, position: { top: '15%', right: '8%' }, color: '#d81b60', opacity: 0.12, delay: 0.8 },
-    { size: 150, position: { bottom: '10%', left: '10%' }, color: '#2196f3', opacity: 0.1, delay: 1.6 },
+    { size: 150, position: { bottom: '10%', left: '10%' }, color: '#5cabecff', opacity: 0.1, delay: 1.6 },
     { size: 90, position: { bottom: '20%', right: '12%' }, color: '#3f51b5', opacity: 0.12, delay: 2.4 },
     { size: 100, position: { top: '60%', left: '20%' }, color: '#00bcd4', opacity: 0.08, delay: 3.2 },
   ];
@@ -265,9 +265,10 @@ export default function WelcomePage() {
                 sx={{
                   background: 'linear-gradient(135deg, #1976d2 0%, #d81b60 100%)',
                   WebkitBackgroundClip: 'text',
+                  fontSize:40,
                   WebkitTextFillColor: 'transparent',
-                  mb: 2,
-                  pb: 2,
+                  mb: 1,
+                  pb: 1,
                   position: 'relative',
                   display: 'inline-block',
                   '&:after': {
@@ -277,7 +278,7 @@ export default function WelcomePage() {
                     left: '50%',
                     transform: 'translateX(-50%)',
                     width: '60%',
-                    height: 4,
+                    height: 2,
                     background: 'linear-gradient(90deg, transparent, #1976d2, transparent)',
                     borderRadius: 2
                   }
@@ -322,6 +323,7 @@ export default function WelcomePage() {
                     elevation={0}
                     sx={{
                       p: 4,
+                      mb:4,
                       borderRadius: 4,
                       backgroundColor: '#fff',
                       textAlign: 'center',
@@ -368,7 +370,7 @@ export default function WelcomePage() {
                     >
                       <Box sx={{ 
                         color: service.color, 
-                        mb: 2,
+                        mb: 6,
                         p: 2,
                         borderRadius: 3,
                         background: alpha(service.color, 0.1),
