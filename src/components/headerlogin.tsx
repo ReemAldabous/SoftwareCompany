@@ -9,7 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router";
-
+import { useCookies } from "react-cookie";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
@@ -20,6 +20,7 @@ import logo from "/images/logo.png";
 const settings = ["Logout"];
 
 function ResponsiveAppBar() {
+  const [cookies] = useCookies(["token", "companyId", "role"]);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const location = useLocation();

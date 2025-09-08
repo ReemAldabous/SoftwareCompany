@@ -16,9 +16,11 @@ import {
   Chip,
   Divider,
   IconButton,
-  Tooltip
+  Tooltip,
+  Tabs,
+  Tab
 } from '@mui/material';
-import { CheckCircle, Person, Error as ErrorIcon, Refresh } from '@mui/icons-material';
+import { CheckCircle, Person, Error as ErrorIcon, Refresh, Cancel, LockOpen } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -43,30 +45,40 @@ const AccountAvatar = styled(Avatar)(({ theme }) => ({
 
 const InactiveAccounts = () => {
   const [inactiveAccounts, setInactiveAccounts] = useState([]);
+  const [activeAccounts, setActiveAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
   const [cookies] = useCookies(["token", "companyId", "role"]);
 
-  const fetchInactiveAccounts = async () => {
+  const fetchAccounts = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(
+      
+      // Fetch inactive accounts
+      const inactiveResponse = await axios.get(
         `http://localhost:5290/${cookies.companyId}/not_activated`,
         { withCredentials: true }
       );
-      setInactiveAccounts(response.data);
+      setInactiveAccounts(inactiveResponse.data);
+      
+      // Fetch active accounts
+      const activeResponse = await axios.get(
+        `http://localhost:5290/${cookies.companyId}/activated`,
+        { withCredentials: true }
+      );
+      setActiveAccounts(activeResponse.data);
     } catch (err) {
-      setError("فشل في جلب الحسابات غير النشطة. يرجى المحاولة مرة أخرى.");
-      console.error('Error fetching inactive accounts:', err);
+      setError("Failed to fetch accounts. Please try again.");
+      console.error('Error fetching accounts:', err);
     } finally {
       setLoading(false);
     }
   };
 
   const activateAccount = async (accountId, username) => {
-    console.log(username,accountId)
     try {
       setLoading(true);
       await axios.put(
@@ -74,20 +86,43 @@ const InactiveAccounts = () => {
         null,
         { withCredentials: true }
       );
-      setSuccessMessage(`تم تفعيل حساب ${username} بنجاح`);
-      await fetchInactiveAccounts();
+      setSuccessMessage(`Account ${username} activated successfully`);
+      await fetchAccounts();
       setTimeout(() => setSuccessMessage(null), 5000);
     } catch (err) {
-      setError(`فشل في تفعيل حساب ${username}`);
+      setError(`Failed to activate account ${username}`);
       console.error('Error activating account:', err);
     } finally {
       setLoading(false);
     }
   };
 
+  const deactivateAccount = async (accountId, username) => {
+    try {
+      setLoading(true);
+      await axios.put(
+        `http://localhost:5290/${accountId}/deactivate`,
+        null,
+        { withCredentials: true }
+      );
+      setSuccessMessage(`Account ${username} deactivated successfully`);
+      await fetchAccounts();
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (err) {
+      setError(`Failed to deactivate account ${username}`);
+      console.error('Error deactivating account:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetchInactiveAccounts();
+    fetchAccounts();
   }, []);
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
 
   return (
     <Container maxWidth="md">
@@ -95,12 +130,12 @@ const InactiveAccounts = () => {
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
           <Typography variant="h4" component="h1" color="primary">
             <Person fontSize="large" sx={{ verticalAlign: 'middle', mr: 1 }} />
-            الحسابات غير النشطة
+            Account Management
           </Typography>
           
-          <Tooltip title="تحديث القائمة">
+          <Tooltip title="Refresh list">
             <IconButton 
-              onClick={fetchInactiveAccounts} 
+              onClick={fetchAccounts} 
               color="primary"
               disabled={loading}
             >
@@ -109,7 +144,14 @@ const InactiveAccounts = () => {
           </Tooltip>
         </Box>
 
-        {loading && inactiveAccounts.length === 0 && (
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+          <Tabs value={activeTab} onChange={handleTabChange}>
+            <Tab label="Inactive Accounts" />
+            <Tab label="Active Accounts" />
+          </Tabs>
+        </Box>
+
+        {loading && inactiveAccounts.length === 0 && activeAccounts.length === 0 && (
           <Box display="flex" justifyContent="center" my={4}>
             <CircularProgress />
           </Box>
@@ -129,49 +171,104 @@ const InactiveAccounts = () => {
           </Alert>
         )}
 
-        {!loading && !error && inactiveAccounts.length === 0 && (
-          <Box textAlign="center" py={4}>
-            <Typography variant="h6" color="textSecondary">
-              لا توجد حسابات غير نشطة حالياً
-            </Typography>
-          </Box>
+        {/* Inactive Accounts Section */}
+        {activeTab === 0 && (
+          <>
+            {!loading && !error && inactiveAccounts.length === 0 && (
+              <Box textAlign="center" py={4}>
+                <Typography variant="h6" color="textSecondary">
+                  No inactive accounts at the moment
+                </Typography>
+              </Box>
+            )}
+
+            {!loading && inactiveAccounts.length > 0 && (
+              <List sx={{ width: '100%' }}>
+                {inactiveAccounts.map((account) => (
+                  <Box key={account.id}>
+                    <StyledListItem>
+                      <AccountAvatar>
+                        {account.username.charAt(0).toUpperCase()}
+                      </AccountAvatar>
+                      <ListItemText
+                        primary={account.username}
+                        secondary={account.role}
+                      />
+                      <Box>
+                        <Chip 
+                          label="Inactive" 
+                          color="warning" 
+                          size="small" 
+                          sx={{ mr: 2 }}
+                        />
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          startIcon={<LockOpen />}
+                          onClick={() => activateAccount(account.id, account.username)}
+                          disabled={loading}
+                          sx={{ borderRadius: '20px' }}
+                        >
+                          Activate
+                        </Button>
+                      </Box>
+                    </StyledListItem>
+                    <Divider variant="inset" component="li" />
+                  </Box>
+                ))}
+              </List>
+            )}
+          </>
         )}
 
-        {!loading && inactiveAccounts.length > 0 && (
-          <List sx={{ width: '100%' }}>
-            {inactiveAccounts.map((account) => (
-              <Box key={account.id}>
-                <StyledListItem>
-                  <AccountAvatar>
-                    {account.username.charAt(0).toUpperCase()}
-                  </AccountAvatar>
-                  <ListItemText
-                    primary={account.username}
-                    
-                  />
-                  <Box>
-                    <Chip 
-                      label="غير مفعل" 
-                      color="warning" 
-                      size="small" 
-                      sx={{ mr: 2 }}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={<CheckCircle />}
-                      onClick={() => activateAccount(account.id, account.username)}
-                      disabled={loading}
-                      sx={{ borderRadius: '20px' }}
-                    >
-                      تفعيل
-                    </Button>
-                  </Box>
-                </StyledListItem>
-                <Divider variant="inset" component="li" />
+        {/* Active Accounts Section */}
+        {activeTab === 1 && (
+          <>
+            {!loading && !error && activeAccounts.length === 0 && (
+              <Box textAlign="center" py={4}>
+                <Typography variant="h6" color="textSecondary">
+                  No active accounts at the moment
+                </Typography>
               </Box>
-            ))}
-          </List>
+            )}
+
+            {!loading && activeAccounts.length > 0 && (
+              <List sx={{ width: '100%' }}>
+                {activeAccounts.map((account) => (
+                  <Box key={account.id}>
+                    <StyledListItem>
+                      <AccountAvatar>
+                        {account.username.charAt(0).toUpperCase()}
+                      </AccountAvatar>
+                      <ListItemText
+                        primary={account.username}
+                        secondary={account.role}
+                      />
+                      <Box>
+                        <Chip 
+                          label="Active" 
+                          color="success" 
+                          size="small" 
+                          sx={{ mr: 2 }}
+                        />
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          startIcon={<Cancel />}
+                          onClick={() => deactivateAccount(account.id, account.username)}
+                          disabled={loading}
+                          sx={{ borderRadius: '20px' }}
+                        >
+                          Deactivate
+                        </Button>
+                      </Box>
+                    </StyledListItem>
+                    <Divider variant="inset" component="li" />
+                  </Box>
+                ))}
+              </List>
+            )}
+          </>
         )}
       </StyledPaper>
     </Container>

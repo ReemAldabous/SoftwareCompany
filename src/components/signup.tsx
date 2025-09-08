@@ -55,6 +55,8 @@ const Dialogsignup = ({ open, handleClose }: any) => {
   async function handleSubmit(e: any) {
     e.preventDefault();
     setload(true);
+      if (form.password.length<8){ seterror(" Error: (passwords must be > 8 )");setload(false);
+      return; }
       if (form.password !== form.confirmPassword) {
       seterror(" Error: Please check your input (passwords must match)");
       setload(false);
@@ -88,7 +90,7 @@ const Dialogsignup = ({ open, handleClose }: any) => {
       console.log(form);
     } catch (err: any) {
       
-        seterror("unexcpected error" );
+        seterror("username must be unique" );
         setload(false)
 
       console.log(err);

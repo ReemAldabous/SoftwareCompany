@@ -232,7 +232,7 @@ export default function WelcomePage() {
               startIcon={<AddIcon />}
               sx={{
                 fontWeight: 'bold',
-                boxShadow: '0 8px 20px rgba(25, 118, 210, 0.3)',
+                boxShadow: '0 3px 22px rgba(25, 118, 210, 0.3)',
                 px: 3,
                 py: 1.5,
                 borderRadius: 3,
@@ -240,7 +240,7 @@ export default function WelcomePage() {
                 textTransform: 'none',
                 fontSize: '1rem',
                 '&:hover': {
-                  boxShadow: '0 12px 24px rgba(25, 118, 210, 0.4)',
+                  boxShadow: '0 5px 24px rgba(25, 118, 210, 0.4)',
                   background: 'linear-gradient(45deg, #1565c0, #1e88e5)'
                 },
                 transition: 'all 0.3s ease'

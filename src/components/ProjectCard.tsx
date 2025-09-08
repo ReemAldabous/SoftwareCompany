@@ -107,8 +107,8 @@ function ProjectCard({ project, onDelete, onEdit }) {
 
           {/* Card Body */}
           <CardContent 
-            onClick={() => navigate(`/projects/${project.id}`)} 
-            sx={{ cursor: 'pointer', pb: expanded ? 0 : 2 }}
+           
+            sx={{ pb: expanded ? 0 : 2 }}
           >
             {/* Dates */}
             <Box 
@@ -127,7 +127,8 @@ function ProjectCard({ project, onDelete, onEdit }) {
               <Typography variant="body2" color="text.secondary">
                 <ArrowRightAlt fontSize="small" sx={{ verticalAlign: "middle" }} /> 
               </Typography>
-              <Typography variant="body2" color="text.primary" fontWeight={500}>
+              <CalendarToday fontSize="small" sx={{ color: "primary.main" , ml:1}} />
+              <Typography variant="body2" color="text.primary" fontWeight={500} sx={{ ml:1}}>
                 End: {project.endDate}
               </Typography>
             </Box>

@@ -720,13 +720,13 @@ function ProjectDetails() {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Box>
                         <Typography variant="caption" color="text.secondary">
-                          Start Date
+                          Start Date     
                         </Typography>
-                        <Typography variant="body2" fontWeight="medium">
-                          {formatDate(project.startDate)}
+                        <Typography variant="body2" fontWeight="medium" >
+                          {formatDate(project.startDate)    }
                         </Typography>
                       </Box>
-                      <Box sx={{ textAlign: 'right' }}>
+                      <Box sx={{ textAlign: 'right' , ml:5 }}>
                         <Typography variant="caption" color="text.secondary">
                           End Date
                         </Typography>
@@ -847,7 +847,7 @@ function ProjectDetails() {
                           </Box>
                         </Box>
                         <Chip 
-                          label={`${developer.points || 0}`} 
+                          label={`${developer.workHours || 0}`} 
                           size="small" 
                           color="secondary" 
                           variant="outlined"
@@ -876,7 +876,17 @@ function ProjectDetails() {
               <PersonAdd sx={{ fontSize: 48, color: 'text.secondary', mb: 1 }} />
               <Typography>No suggested developers available</Typography>
             </Box>
-          ) : (
+          ) : (<>  <Box sx={{ px: 2, py: 1.5, backgroundColor: '#f9f9f9' }}>
+                    <Typography variant="body2" sx={{ mb: 1 }}>Working Hours:</Typography>
+                    <TextField
+                      type="number"
+                      size="small"
+                      value={workingHours}
+                      onChange={(e) => setWorkingHours(parseInt(e.target.value) || 0)}
+                      inputProps={{ min: 0 }}
+                      sx={{ width: '120px' }}
+                    />
+                  </Box>
             <List>
               {suggestedDevelopers.map(developer => (
                 <Box key={developer.id}>
@@ -888,7 +898,7 @@ function ProjectDetails() {
                       <Box>
                         <Typography variant="subtitle1">{developer.fullName}</Typography>
                         <Typography variant="body2" color="text.secondary">
-                          {developer.points || 0} points
+                          {developer.score || 0} score
                         </Typography>
                       </Box>
                     </Box>
@@ -902,20 +912,10 @@ function ProjectDetails() {
                       </Button>
                     </ListItemSecondaryAction>
                   </ListItem>
-                  <Box sx={{ px: 2, py: 1.5, backgroundColor: '#f9f9f9' }}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>Working Hours:</Typography>
-                    <TextField
-                      type="number"
-                      size="small"
-                      value={workingHours}
-                      onChange={(e) => setWorkingHours(parseInt(e.target.value) || 0)}
-                      inputProps={{ min: 0 }}
-                      sx={{ width: '120px' }}
-                    />
-                  </Box>
+                
                 </Box>
               ))}
-            </List>
+            </List></>
           )}
         </DialogContent>
         <DialogActions>
