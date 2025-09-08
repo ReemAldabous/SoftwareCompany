@@ -212,7 +212,7 @@ export default function WelcomePage() {
         ))}
         
         {/* زر الانتقال للصفحة الأخرى */}
-        {(cookies.role === "company" || cookies.role === "employ manager") && (
+        {(cookies.role === "company" || cookies.role === "employee_manager") && (
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}

@@ -118,7 +118,7 @@ function Project() {
               startIcon={<Add />}
               onClick={() => setOpenForm(true)}
               sx={{
-                backgroundColor: '#ed315dff',
+                backgroundColor: '#da5ec1af',
                 '&:hover': {
                   backgroundColor: 'primary.dark',
                 }

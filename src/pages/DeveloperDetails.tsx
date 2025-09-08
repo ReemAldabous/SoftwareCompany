@@ -226,40 +226,19 @@ export default function DeveloperDetails() {
         {/* Developer Details */}
         <div className="col-12 col-md-4">
      <Card className="rounded-3 shadow-lg border-0">
-  <CardContent style={{backgroundColor: '#b3cffdff'}}>
+  <CardContent style={{backgroundColor: '#5c8ee7ff'}}>
     <div className="row text-center g-3">
           <Box 
   textAlign="center" 
   sx={{ color: "white", fontSize: "3rem", fontWeight: "bold" ,mt: 3   }}
 >
-   Developer {developer.fullName}
+   👨‍💻 Developer {developer.fullName}
 </Box>
-      {/* Salary */}
-      <div className="col-12 col-md-4">
-        <div className="d-flex flex-column align-items-center bg-light p-3 rounded h-100">
-          <AttachMoney className="text-success mb-2" fontSize="large" />
-          <p className="mb-0 text-muted small">Salary ${developer.salary} </p>
-          
-        </div>
-      </div>
+   
 
-      {/* Birthdate */}
-      <Box className="col-12 col-md-4">
-        <Box className="d-flex flex-column align-items-center bg-light p-3 rounded h-100">
-          <Cake className="text-danger mb-2" fontSize="large" />
-          <p className="mb-0 text-muted small">Birthdate    {developer.birthdate}</p>
-          
-        </Box>
-      </Box>
+   
 
-      {/* Hiring Date */}
-      <div className="col-12 col-md-4">
-        <div className="d-flex flex-column align-items-center bg-light p-3 rounded h-100">
-          <Event className="text-primary mb-2" fontSize="large" />
-          <p className="mb-0 text-muted large">Hiring Date    {developer.hiringDate}</p>
-         
-        </div>
-      </div>
+     
     </div>
   </CardContent>
 </Card>
