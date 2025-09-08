@@ -282,7 +282,7 @@ function ProjectDetails() {
   const updateTaskStatus = async (taskId, status) => {
     try {
       await axios.put(
-        `http://localhost:5243/companies/${companyId}/projects/${id}/tasks/${taskId}/${status}`,
+        `http://localhost:5243/companies/${companyId}/projects/${id}/tasks/${taskId}/${status}`,null,
         { withCredentials: true }
       );
       
@@ -632,7 +632,7 @@ function ProjectDetails() {
                                   <Tooltip title="Reject Task">
                                     <IconButton 
                                       color="error" 
-                                      onClick={() => updateTaskStatus(task.id, 'created')}
+                                      onClick={() => updateTaskStatus(task.id, 'reject')}
                                       size="large"
                                     >
                                       <Cancel />
