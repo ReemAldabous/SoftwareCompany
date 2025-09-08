@@ -27,6 +27,8 @@ import {
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
+import { useCookies } from "react-cookie";
+
 
 const ExpandButton = styled(IconButton)(({ theme, expanded }) => ({
   transform: !expanded ? 'rotate(0deg)' : 'rotate(180deg)',
@@ -37,6 +39,8 @@ const ExpandButton = styled(IconButton)(({ theme, expanded }) => ({
 }));
 
 function ProjectCard({ project, onDelete, onEdit }) {
+  const [cookies] = useCookies(["token", "companyId", "role"]);
+  
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -155,12 +159,12 @@ function ProjectCard({ project, onDelete, onEdit }) {
           {/* Actions */}
           <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
             <Box>
-              <Tooltip title="View details" arrow>
+            { (cookies.role==="developer"|| cookies.role==="project_manager")&& <Tooltip title="View details" arrow>
                 <IconButton size="small" color="info" onClick={() => navigate(`/projects/${project.id}`)}>
                   <Info fontSize="small" />
                 </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit" arrow>
+              </Tooltip>}
+              { (cookies.role==="project_manager")&&<><Tooltip title="Edit" arrow>
                 <IconButton size="small" color="primary" onClick={() => setEditMode(true)}>
                   <Edit fontSize="small" />
                 </IconButton>
@@ -169,7 +173,7 @@ function ProjectCard({ project, onDelete, onEdit }) {
                 <IconButton size="small" color="error" onClick={() => onDelete(project.id)}>
                   <Delete fontSize="small" />
                 </IconButton>
-              </Tooltip>
+              </Tooltip></>}
             </Box>
             <ExpandButton
               expanded={expanded}

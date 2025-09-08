@@ -113,7 +113,7 @@ function Project() {
             <Typography variant="h4" component="h1" fontWeight="bold" sx={{color:"blue"}}>
               Projects Mangment
             </Typography>
-            <Button 
+          {(cookies.role==="project_manager")&& <Button 
               variant="contained" 
               startIcon={<Add />}
               onClick={() => setOpenForm(true)}
@@ -125,7 +125,7 @@ function Project() {
               }}
             >
               Add Project
-            </Button>
+            </Button>}
           </Box>
 
           {error && (

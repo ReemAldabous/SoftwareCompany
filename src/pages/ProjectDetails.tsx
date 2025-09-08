@@ -222,7 +222,7 @@ function ProjectDetails() {
       setWorkingHours(0);
     } catch (err) {
       console.error(err);
-      setError("Failed to add developer to project");
+      setError("Failed to add developer to project because already exit");
     }
   };
 
@@ -264,7 +264,7 @@ function ProjectDetails() {
       });
     } catch (err) {
       console.error(err);
-      setError("Failed to create task");
+      setError("Failed to create task Unauthorized");
     }
   };
 
@@ -344,7 +344,7 @@ function ProjectDetails() {
       setSelectedTech("");
     } catch (err) {
       console.error("Failed to add technology", err);
-      setError("Failed to add technology to project");
+      setError("Failed to add technology to project because already exit ");
     }
   };
 
@@ -383,25 +383,7 @@ function ProjectDetails() {
     }
   };
 
-  const getPriorityText = (priority) => {
-    switch (priority) {
-      case 1: return 'Low';
-      case 2: return 'Medium';
-      case 3: return 'High';
-      case 4: return 'Urgent';
-      default: return priority;
-    }
-  };
 
-  const getComplexityText = (complexity) => {
-    switch (complexity) {
-      case 1: return 'Simple';
-      case 2: return 'Medium';
-      case 3: return 'Complex';
-      case 4: return 'Very Complex';
-      default: return complexity;
-    }
-  };
 
   if (loading) {
     return (
@@ -504,16 +486,18 @@ function ProjectDetails() {
                   <Typography variant="h6">Project Tasks</Typography>
                 </Box>
               }
-              action={
-                <Button 
-                  variant="contained" 
-                  startIcon={<Add />}
-                  onClick={() => setAddTaskDialog(true)}
-                  size={isMobile ? "small" : "medium"}
-                >
-                  Add Task
-                </Button>
-              }
+                  action={
+  (cookies.role === "project_manager" )&& (
+    <Button 
+      variant="contained" 
+      startIcon={<Add />}
+      onClick={() => setAddTaskDialog(true)}
+      size={isMobile ? "small" : "medium"}
+    >
+      Add Task
+    </Button>
+  )
+}
               sx={{ pb: 1 }}
             />
             <CardContent>
@@ -600,7 +584,7 @@ function ProjectDetails() {
                                     color="primary" 
                                     onClick={() => updateTaskStatus(task.id, 'lock')}
                                     size="large"
-                                  >
+                                  > start
                                     <PlayArrow />
                                   </IconButton>
                                 </Tooltip>
@@ -612,7 +596,7 @@ function ProjectDetails() {
                                     color="success" 
                                     onClick={() => updateTaskStatus(task.id, 'done')}
                                     size="large"
-                                  >
+                                  > Done
                                     <CheckCircle />
                                   </IconButton>
                                 </Tooltip>
@@ -755,7 +739,7 @@ function ProjectDetails() {
                   <Typography variant="h6">Technologies</Typography>
                 </Box>
               }
-              action={
+              action={ (cookies.role === "project_manager" )&&
                 <IconButton onClick={() => setAddTechDialogOpen(true)} color="primary">
                   <Add />
                 </IconButton>
@@ -800,7 +784,7 @@ function ProjectDetails() {
                 </Box>
               }
               action={
-                <Button 
+                  (cookies.role === "project_manager" )&&<Button 
                   variant="outlined" 
                   startIcon={<PersonAdd />}
                   onClick={fetchSuggestedDevelopers}
@@ -903,7 +887,7 @@ function ProjectDetails() {
                       </Box>
                     </Box>
                     <ListItemSecondaryAction>
-                      <Button 
+                   <Button 
                         variant="contained" 
                         size="small"
                         onClick={() => addDeveloperToProject(developer.id)}

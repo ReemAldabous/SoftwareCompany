@@ -35,7 +35,7 @@ interface Developer {
 
 const DevelopersManager: React.FC = () => {
   const navigate = useNavigate();
-  const [cookies] = useCookies(["token", "companyId"]);
+  const [cookies] = useCookies(["token", "companyId","role"]);
   const API_URL = `http://localhost:5243/companies/${cookies.companyId}/developers`;
 
   const [developers, setDevelopers] = useState<Developer[]>([]);
@@ -160,7 +160,7 @@ const DevelopersManager: React.FC = () => {
                     },
                   }}
                 >
-                  <CardContent sx={{ textAlign: "center" ,cursor: 'pointer' }}  onClick={() => navigate(`/developers/${dev.id}`)} >
+                 <CardContent sx={{ textAlign: "center" ,cursor: 'pointer' }}  onClick={(cookies.role==="project_manager")?() => navigate(`/developers/${dev.id}`):{}} >
                     <Avatar
                       sx={{
                         bgcolor: "primary.main",
