@@ -121,7 +121,7 @@ const DevelopersManager: React.FC = () => {
   return (
     <>
       <ResponsiveAppBar />
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="lg" sx={{ py: 4 , mt:7}}>
         <ToastContainer position="top-right" autoClose={3000} />
 
         <Typography

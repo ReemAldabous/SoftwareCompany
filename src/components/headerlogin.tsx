@@ -46,14 +46,14 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       sx={{
         background: "linear-gradient(90deg, #96bbdfff 0%, #42a5f5 100%)",
         color: "white",
         boxShadow: 4,
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" >
         <Toolbar disableGutters>
           {/* Logo + Title (Desktop) */}
           <Avatar src={logo} alt="Logo" sx={{ mr: 1, display: { xs: "none", md: "flex" } }} />

@@ -196,7 +196,7 @@ const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleC
               sx={{ color: "white" }}
               onClick={handleSubmit}
             >
-              SIGN UP
+              Create Account
             </Button>
           </>
         )}

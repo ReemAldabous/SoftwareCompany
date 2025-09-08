@@ -81,8 +81,8 @@ const services = [
   },
   {
     icon: <TimelineIcon sx={{ fontSize: 50 }} />,
-    title: 'Advanced Analytics',
-    desc: 'Gain insights with detailed analytics and performance metrics.',
+    title: 'Advanced Security',
+    desc: 'Advanced data security with robust encryption capabilities',
     color: '#00bcd4',
     gradient: 'linear-gradient(135deg, #00bcd4 0%, #26c6da 100%)'
   },
@@ -158,8 +158,7 @@ const ScrollingText = () => {
           color: 'primary.main',
           fontWeight: 600
         }}>
-          ✦ Streamline Your Workflow ✦ Increase Productivity ✦ Enhance Collaboration ✦ 
-          Improve Efficiency ✦ Deliver Projects Faster ✦
+            ✨ Smart Project Management', '🚀 Boost Productivity', '💡 Effective Collaboration', '📊 Advanced Analytics', '🔒 Enhanced Security', '⭐ Exceptional User Experience
         </Typography>
       </motion.div>
     </Box>
@@ -267,6 +266,7 @@ export default function WelcomePage() {
                   WebkitBackgroundClip: 'text',
                   fontSize:40,
                   WebkitTextFillColor: 'transparent',
+                  mt:7,
                   mb: 1,
                   pb: 1,
                   position: 'relative',

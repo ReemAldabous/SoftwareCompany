@@ -20,11 +20,12 @@ const Home = () => {
       <Box
         sx={{
           width: '100vw',
+
           minHeight: '90vh',
           px: { xs: 3, md: 10 },
           py: { xs: 6, md: 10 },
           background: 'linear-gradient(135deg, #f9fbff, #ffffff)',
-          borderTop: '6px solid #4BB0C8',
+          borderTop: '7px solid #4BB0C8',
           borderBottom: '6px solid #E44C98',
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
@@ -109,11 +110,22 @@ const Home = () => {
           }}
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ 
+              scale: [1, 1.05, 1], // تكبير ثم تصغير قليلاً ثم العودة للحجم الطبيعي
+              opacity: 1 
+            }}
+            transition={{ 
+              duration: 2,
+              ease: "easeInOut",
+              times: [0, 0.5, 1], // توقيت الحركة
+            }}
+            whileHover={{
+              scale: 1.05, // تكبير بسيط عند المرور بالماوس
+              transition: { duration: 0.3 }
+            }}
           >
-            <img
+            <motion.img
               src={pic}
               alt="Company illustration"
               style={{
@@ -121,6 +133,15 @@ const Home = () => {
                 maxWidth: '500px',
                 height: 'auto',
                 objectFit: 'contain',
+                borderRadius: '16px', // زوايا دائرية بسيطة
+              }}
+              animate={{
+                scale: [1, 1.02, 1], // حركة تنفس خفيفة مستمرة
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity, // تكرار الحركة إلى ما لا نهاية
+                ease: "easeInOut",
               }}
             />
           </motion.div>
