@@ -35,6 +35,7 @@ import {
 } from '@mui/material';
 import {
   ArrowBack,
+  PlayArrow,
   CalendarToday,
   Description,
   EmojiEvents,
@@ -597,7 +598,7 @@ function ProjectDetails() {
                                 <Tooltip title="Start Task">
                                   <IconButton 
                                     color="primary" 
-                                    onClick={() => updateTaskStatus(task.id, 'start')}
+                                    onClick={() => updateTaskStatus(task.id, 'lock')}
                                     size="large"
                                   >
                                     <PlayArrow />
