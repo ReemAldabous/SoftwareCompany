@@ -39,11 +39,26 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  const navItems = [
-    { label: "Projects", path: "/projects" },
-    { label: "Employees", path: "/employees" },
-    { label: "Developers", path: "/developers" },
+  // تعريف جميع عناصر القائمة الممكنة
+  const allNavItems = [
+    { label: "Projects", path: "/projects", roles: ["company", "project_manager", "developer"] },
+    { label: "Employees", path: "/employees", roles: ["company", "employee_manager"] },
+    { label: "Developers", path: "/developers", roles: ["company", "project_manager", "employee_manager"] },
+    { label: "Account Management", path: "/account-management", roles: ["CompanyManager"] },
   ];
+
+  // تصفية عناصر القائمة بناءً على الدور
+  const getNavItemsByRole = () => {
+    const userRole = cookies.role;
+    
+    if (!userRole) return [];
+    
+    return allNavItems.filter(item => 
+      item.roles.includes(userRole)
+    );
+  };
+
+  const navItems = getNavItemsByRole();
 
   return (
     <AppBar
@@ -54,7 +69,7 @@ function ResponsiveAppBar() {
         boxShadow: 4,
       }}
     >
-      <Container maxWidth="xl" >
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Logo + Title (Desktop) */}
           <Avatar src={logo} alt="Logo" sx={{ mr: 1, display: { xs: "none", md: "flex" } }} />
@@ -74,38 +89,40 @@ function ResponsiveAppBar() {
             Software Company
           </Typography>
 
-          {/* Mobile Menu Icon */}
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorElNav}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              PaperProps={{
-                sx: {
-                  background: "#72a8dfff",
-                  color: "white",
-                  fontSize:'30px',
-                  fontFamily:'fantasy',
-                  fontWeight:'1px',
-                  borderRadius: 2,
-                },
-              }}
-            >
-              {navItems.map((item) => (
-                <MenuItem
-                  key={item.path}
-                  onClick={handleCloseNavMenu}
-                  component={Link}
-                  to={item.path}
-                >
-                  <Typography textAlign="center">{item.label}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {/* Mobile Menu Icon - يظهر فقط إذا كان هناك عناصر في القائمة */}
+          {navItems.length > 0 && (
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorElNav}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                PaperProps={{
+                  sx: {
+                    background: "#72a8dfff",
+                    color: "white",
+                    fontSize: '30px',
+                    fontFamily: 'fantasy',
+                    fontWeight: '1px',
+                    borderRadius: 2,
+                  },
+                }}
+              >
+                {navItems.map((item) => (
+                  <MenuItem
+                    key={item.path}
+                    onClick={handleCloseNavMenu}
+                    component={Link}
+                    to={item.path}
+                  >
+                    <Typography textAlign="center">{item.label}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
 
           {/* Title (Mobile) */}
           <Avatar src={logo} alt="Logo" sx={{ mr: 1, display: { xs: "flex", md: "none" } }} />
@@ -122,36 +139,38 @@ function ResponsiveAppBar() {
             Software Company
           </Typography>
 
-          {/* Desktop Nav */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, ml: 4 }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.path}
-                component={Link}
-                to={item.path}
-                sx={{
-                  my: 2,
-                  mx: 1,
-                  color: location.pathname === item.path ? "#ffeb3b" : "white",
-                  backgroundColor: location.pathname === item.path ? "rgba(255,255,255,0.2)" : "transparent",
-                  borderRadius: 3,
-                  px: 3,
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: "rgba(255,255,255,0.2)",
-                  },
-                }}
-              >
-                {item.label}
-              </Button>
-            ))}
-          </Box>
+          {/* Desktop Nav - يظهر فقط إذا كان هناك عناصر في القائمة */}
+          {navItems.length > 0 && (
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, ml: 4 }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.path}
+                  component={Link}
+                  to={item.path}
+                  sx={{
+                    my: 2,
+                    mx: 1,
+                    color: location.pathname === item.path ? "#ffeb3b" : "white",
+                    backgroundColor: location.pathname === item.path ? "rgba(255,255,255,0.2)" : "transparent",
+                    borderRadius: 3,
+                    px: 3,
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "rgba(255,255,255,0.2)",
+                    },
+                  }}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </Box>
+          )}
 
           {/* User Menu */}
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0  , position :'fixed' , right:16}}>
             <Tooltip title="Account">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: "#ea74b7ff" }}>
+                <Avatar sx={{ bgcolor: "#ffffffff" , color:'#5e6d9dff' }}>
                   <LogoutIcon />
                 </Avatar>
               </IconButton>
@@ -170,12 +189,13 @@ function ResponsiveAppBar() {
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <NavLink
-                      to="/"
-                      style={{
-                        textDecoration: "none",
-                      }}
-                    >
-                  <Typography>{setting}</Typography></NavLink>
+                    to="/"
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Typography>{setting}</Typography>
+                  </NavLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -185,4 +205,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;

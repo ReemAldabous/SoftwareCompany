@@ -19,7 +19,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2" sx={{ fontWeight: 500, letterSpacing: "0.5px" }}>
-        © 2025 Software Company. All rights reserved.
+        © 2025 Software Managment Company.
       </Typography>
     </Box>
   );
