@@ -74,7 +74,8 @@ const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleC
       console.log(r5)
       console.log(r2);
       setload(false);
-      toast.success("please login now  ",{position:"top-center", autoClose:5000 })
+      console.log(companyid)
+      toast.success(`please login now company Id : ${company_id} `,{position:"top-center", autoClose:5000 })
       handleClose()
 
      

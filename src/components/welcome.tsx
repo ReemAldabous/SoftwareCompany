@@ -22,6 +22,7 @@ import Footer from './footer';
 import { useNavigate } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
 
+
 const theme = createTheme({
   palette: {
     primary: { 
@@ -94,6 +95,63 @@ const services = [
     gradient: 'linear-gradient(135deg, #3f51b5 0%, #5c6bc0 100%)'
   },
 ];
+
+
+// مكون الملاحظة الثابتة
+const FixedNote = () => {
+  const [cookies] = useCookies(["token", "companyId", "role"]);
+
+  return (
+    <Paper 
+      elevation={3}
+      sx={{
+        position: 'fixed',
+        top: { xs: 70, md: 100 }, // تحت الـ header
+        left: 20,
+        zIndex: 999,
+        p: 1.5,
+        borderRadius: 2,
+        backgroundColor: alpha('#7bd1d1ff', 0.9),
+        color: 'white',
+        maxWidth: 250,
+        border: '1px solid',
+        borderColor: alpha('#5bc2f6ff', 0.3),
+        backdropFilter: 'blur(5px)',
+        '&:hover': {
+          backgroundColor: alpha('#ff9800', 0.95),
+        }
+      }}
+    >
+      <Typography variant="body2" sx={{ fontWeight: 'medium', fontSize: '0.8rem' }}>
+        💡  Company Id : {cookies.companyId}
+      </Typography>
+    </Paper>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // مكون فقاعة الخلفية المتحركة المحسنة
 const Bubble = ({ size, position, color, opacity, delay }) => {
@@ -195,6 +253,8 @@ export default function WelcomePage() {
 
   return (
     <ThemeProvider theme={theme}>
+      <FixedNote />
+
       <Box 
         sx={{ 
           background: muiTheme.palette.background.default, 
@@ -232,21 +292,22 @@ export default function WelcomePage() {
               startIcon={<AddIcon />}
               sx={{
                 fontWeight: 'bold',
-                boxShadow: '0 3px 22px rgba(25, 118, 210, 0.3)',
+                boxShadow: '0 3px 22px rgba(240, 245, 250, 0.3)',
                 px: 3,
                 py: 1.5,
                 borderRadius: 3,
-                background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                 background: 'rgba(255, 255, 255, 0.2)',
+                 color : 'blue',
                 textTransform: 'none',
                 fontSize: '1rem',
                 '&:hover': {
-                  boxShadow: '0 5px 24px rgba(25, 118, 210, 0.4)',
-                  background: 'linear-gradient(45deg, #1565c0, #1e88e5)'
+                  boxShadow: '0 5px 24px rgba(161, 192, 224, 0.4)',
+                       background: 'rgba(251, 234, 234, 0.2)'
                 },
                 transition: 'all 0.3s ease'
               }}
             >
-              Activitine
+              Account Management
             </Button>
           </motion.div>
         )}
