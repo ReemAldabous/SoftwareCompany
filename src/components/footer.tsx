@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography } from "@mui/material";
 
 const Footer = () => {
@@ -6,7 +5,7 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
-        background: "linear-gradient(90deg, #1976d2 0%, #42a5f5 100%)",
+        background: "linear-gradient(90deg, #2f82d5ff , #65a9e0ff 60%)",
         color: "white",
         py: 2,
         mt: "auto",

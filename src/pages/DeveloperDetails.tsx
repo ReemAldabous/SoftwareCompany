@@ -230,7 +230,7 @@ export default function DeveloperDetails() {
     <div className="row text-center g-3">
           <Box 
   textAlign="center" 
-  sx={{ color: "white", fontSize: "3rem", fontWeight: "bold" ,mt: 3   }}
+  sx={{ color: "white", fontSize: "3rem", fontWeight: "bold" ,height:50  }}
 >
    👨‍💻 Developer {developer.fullName}
 </Box>
@@ -251,7 +251,7 @@ export default function DeveloperDetails() {
             <CardContent>
               <div className="d-flex justify-content-between align-items-center mb-4">
                 <Typography variant="h6" className="fw-bold d-flex align-items-center">
-                  <Code className="me-2 text-primary" /> Technical Skills
+                  🚀  Technical Skills
                 </Typography>
                 <Button variant="contained" startIcon={<Add />} onClick={() => setAddDialogOpen(true)}>
                   Add Technology

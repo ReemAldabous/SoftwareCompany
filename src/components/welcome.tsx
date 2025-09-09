@@ -327,7 +327,7 @@ export default function WelcomePage() {
                   WebkitBackgroundClip: 'text',
                   fontSize:40,
                   WebkitTextFillColor: 'transparent',
-                  mt:7,
+                  mt:9,
                   mb: 1,
                   pb: 1,
                   position: 'relative',

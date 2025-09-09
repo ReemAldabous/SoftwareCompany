@@ -59,7 +59,7 @@ const Home = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Company Software Platform
+              Software Company platform
             </Typography>
 
             <Typography
@@ -74,7 +74,7 @@ const Home = () => {
             </Typography>
 
             <Typography sx={{ color: 'text.secondary', mb: 4 }}>
-             This portal provides the foundation for managing the company's project effectively. From here, you can access  dashboards for  collaborate with cross-functional teams, manage projects efficiently, And delivering it on time.
+             This platform provides the foundation for managing the company's project effectively. From here, you can access  dashboards for  collaborate with cross-functional teams, manage projects efficiently, And delivering it on time.
             </Typography>
 
             <Button
