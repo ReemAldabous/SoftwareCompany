@@ -19,6 +19,7 @@ interface DialogSignupCompanyProps {
 }
 interface CompanyForm {
   password: string; // كلمة المرور للشركة
+  confirmpassword: string;
   companyname: string; // اسم الشركة
   role: string; // الدور في النظام، هنا افتراضياً "company"
   username: string; // اسم المستخدم
@@ -37,6 +38,7 @@ const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleC
     username: "",
     establishdate: "",
     description: "",
+    confirmpassword:""
   });
 
   
@@ -51,6 +53,19 @@ const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleC
   async function handleSubmit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setload(true);
+    
+    if (form.password.length < 8) { 
+    
+      setload(false);
+      toast.error("The password must be longer than 8 characters.")
+      return; 
+    }
+    
+    if (form.password !== form.confirmpassword) {
+         toast.error("The password does not match the confirmation.")
+      setload(false);
+      return;
+    }
     try {
       console.log(form);
       const r1 = await axios.post<{ accountId: string }>("http://localhost:5290/signup", {
@@ -120,7 +135,7 @@ const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleC
           required
           autoFocus
           fullWidth
-          label="companyname"
+          label="CompanyName"
           variant="standard"
           sx={{ marginTop: "10px" }}
         />
@@ -145,7 +160,18 @@ const DialogsignupCompany: React.FC<DialogSignupCompanyProps> = ({ open, handleC
           onChange={handlechange}
           required
           fullWidth
-          label="password"
+          label="Password"
+          variant="standard"
+          sx={{ marginTop: "10px" }}
+        />
+          <TextField
+          type="password"
+          value={form.confirmpassword}
+          name="confirmpassword"
+          onChange={handlechange}
+          required
+          fullWidth
+          label="ConfirmPassword"
           variant="standard"
           sx={{ marginTop: "10px" }}
         />

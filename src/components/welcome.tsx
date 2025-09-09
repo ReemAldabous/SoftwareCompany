@@ -16,11 +16,10 @@ import { useCookies } from "react-cookie";
 import TimelineIcon from '@mui/icons-material/Timeline';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import AddIcon from '@mui/icons-material/Add';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Footer from './footer';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
 
 const theme = createTheme({
@@ -128,28 +127,6 @@ const FixedNote = () => {
     </Paper>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

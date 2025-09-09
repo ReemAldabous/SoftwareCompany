@@ -71,8 +71,8 @@ const Dialoglogin: React.FC<DialogLoginProps> = ({ open, handleClose }) => {
       console.error(err);
       setLoading(false);
 
-      if (err.response?.status === 422) {
-        setError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+      if (err.status === 422) {
+        setError("username or password error");
       } else {
         setError("unexcpected error please sign up first or wait activation");
       }

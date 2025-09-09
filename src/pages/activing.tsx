@@ -23,6 +23,14 @@ import {
 import { CheckCircle, Person, Error as ErrorIcon, Refresh, Cancel, LockOpen } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
+interface Account {
+  id: string;
+  username: string;
+  role: string;
+  // يمكن إضافة خصائص أخرى إذا كانت موجودة في الاستجابة
+}
+
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
   marginTop: theme.spacing(4),
   padding: theme.spacing(3),
@@ -43,29 +51,29 @@ const AccountAvatar = styled(Avatar)(({ theme }) => ({
   marginRight: theme.spacing(2),
 }));
 
-const InactiveAccounts = () => {
-  const [inactiveAccounts, setInactiveAccounts] = useState([]);
-  const [activeAccounts, setActiveAccounts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [activeTab, setActiveTab] = useState(0);
+const InactiveAccounts: React.FC = () => {
+  const [inactiveAccounts, setInactiveAccounts] = useState<Account[]>([]);
+  const [activeAccounts, setActiveAccounts] = useState<Account[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<number>(0);
   const [cookies] = useCookies(["token", "companyId", "role"]);
 
-  const fetchAccounts = async () => {
+  const fetchAccounts = async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
       
       // Fetch inactive accounts
-      const inactiveResponse = await axios.get(
+      const inactiveResponse = await axios.get<Account[]>(
         `http://localhost:5290/${cookies.companyId}/not_activated`,
         { withCredentials: true }
       );
       setInactiveAccounts(inactiveResponse.data);
       
       // Fetch active accounts
-      const activeResponse = await axios.get(
+      const activeResponse = await axios.get<Account[]>(
         `http://localhost:5290/${cookies.companyId}/activated`,
         { withCredentials: true }
       );
@@ -78,7 +86,7 @@ const InactiveAccounts = () => {
     }
   };
 
-  const activateAccount = async (accountId, username) => {
+  const activateAccount = async (accountId: string, username: string): Promise<void> => {
     try {
       setLoading(true);
       await axios.put(
@@ -97,7 +105,7 @@ const InactiveAccounts = () => {
     }
   };
 
-  const deactivateAccount = async (accountId, username) => {
+  const deactivateAccount = async (accountId: string, username: string): Promise<void> => {
     try {
       setLoading(true);
       await axios.put(
@@ -120,7 +128,7 @@ const InactiveAccounts = () => {
     fetchAccounts();
   }, []);
 
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
     setActiveTab(newValue);
   };
 

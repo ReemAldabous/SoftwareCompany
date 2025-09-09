@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { 
   AppBar, 
-  Toolbar, 
-  Typography, 
+  Toolbar,  
   Button, 
   Box, 
   Container,
@@ -12,20 +11,24 @@ import {
   Menu,
   MenuItem,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Breakpoint
 } from '@mui/material';
-import {
-  AccountCircle,
-  Menu as MenuIcon
-} from '@mui/icons-material';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import v from '/images/logo.png';
 import Dialoglogin from './login';
 import Dialogsignup from './signup';
 
-// Hide on scroll functionality
-function HideOnScroll(props) {
-  const { children } = props;
-  const trigger = useScrollTrigger();
+interface HideOnScrollProps {
+  children: ReactNode;
+  window?: () => Window;
+}
+
+function HideOnScroll(props: HideOnScrollProps) {
+  const { children, window } = props;
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+  });
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -35,33 +38,33 @@ function HideOnScroll(props) {
 }
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
-  const [open1, setOpen1] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState<boolean>(false);
+  const [open1, setOpen1] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md' as Breakpoint));
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (): void => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setOpen(false);
   };
 
-  const handleClickOpen1 = () => {
+  const handleClickOpen1 = (): void => {
     setOpen1(true);
   };
 
-  const handleClose1 = () => {
+  const handleClose1 = (): void => {
     setOpen1(false);
   };
 
-  const handleMenu = (event) => {
+  const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleCloseMenu = () => {
+  const handleCloseMenu = (): void => {
     setAnchorEl(null);
   };
 
@@ -71,7 +74,6 @@ const Header = () => {
         <AppBar 
           position="sticky" 
           sx={{ 
-          
             color: 'black',
             boxShadow: '0 2px 20px rgba(0, 0, 0, 0.1)',
             backdropFilter: 'blur(10px)',
@@ -80,7 +82,6 @@ const Header = () => {
         >
           <Container maxWidth="xl" sx={{  backgroundColor: '#ffffffff'}}>
             <Toolbar sx={{ py: 1 }}>
-              {/* Logo */}
               <Box sx={{ 
                 flexGrow: 1, 
                 display: 'flex', 
@@ -98,7 +99,6 @@ const Header = () => {
                 />
               </Box>
 
-              {/* Desktop Navigation */}
               {!isMobile ? (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Button 
@@ -149,7 +149,6 @@ const Header = () => {
                   </Button>
                 </Box>
               ) : (
-                /* Mobile Navigation */
                 <Box>
                   <IconButton
                     size="large"

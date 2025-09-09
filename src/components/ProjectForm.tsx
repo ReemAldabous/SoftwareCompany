@@ -1,8 +1,12 @@
 import { Dialog, DialogTitle, DialogContent, TextField, MenuItem, Button, DialogActions, Box, Typography, InputAdornment } from '@mui/material';
 import { useState } from 'react';
 import { CalendarToday } from '@mui/icons-material';
+interface StatusOption {
+  value: string;
+  label: string;
+}
 
-const statuses = [
+const statuses: StatusOption[] = [
   { value: 'created', label: 'Created' },
   { value: 'started', label: 'Started' },
   { value: 'done', label: 'Done' },
