@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { toast,ToastContainer } from "react-toastify";
+
 
 // MUI Components
 import {
@@ -14,7 +16,6 @@ import {
   Button,
   TextField,
   MenuItem,
- 
   Chip,
   LinearProgress,
   Card,
@@ -24,12 +25,7 @@ import {
   Close,
   Add,
   Edit,
-  AttachMoney,
-  Cake,
-  Event,
-  Code,
 } from "@mui/icons-material";
-import { color } from "framer-motion";
 
 export default function DeveloperDetails() {
   const { id } = useParams();
@@ -115,6 +111,8 @@ export default function DeveloperDetails() {
       setExperienceYears(0);
     } catch (err) {
       console.error("Failed to add technology", err);
+      toast.error("this technology already exsit")
+      
     }
   };
 
@@ -219,8 +217,9 @@ export default function DeveloperDetails() {
     );
   }
 
-  return (
+  return ( 
     <div className="container py-5  ">
+     <ToastContainer/>
       
       <div className="row g-4">
         {/* Developer Details */}

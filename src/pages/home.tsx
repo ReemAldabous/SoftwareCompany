@@ -1,8 +1,8 @@
 import Header from '../components/header';
 import Footer from '../components/footer';
 import pic from '/images/Picsart.png';
-import { ToastContainer, toast } from "react-toastify";
-import React, { useState } from 'react';
+import { ToastContainer } from "react-toastify";
+import { useState } from 'react';
 import DialogsignupCompany from '../components/DialogSinnupCompany';
 
 import { Box, Typography, Button } from '@mui/material';

@@ -10,7 +10,6 @@ import {
   Chip,
   Grid,
   Paper,
-  Divider,
   CircularProgress,
   Alert,
   Dialog,
@@ -21,13 +20,10 @@ import {
   MenuItem,
   List,
   ListItem,
-  ListItemText,
   ListItemSecondaryAction,
   IconButton,
-  Fab,
   LinearProgress,
   Avatar,
-  AvatarGroup,
   CardHeader,
   Tooltip,
   useTheme,
@@ -46,17 +42,17 @@ import {
   Cancel,
   Edit,
   Delete,
-  Person,
   AccessTime,
   Code,
   Close,
-  Work,
   Task,
   Science,
   Group
 } from '@mui/icons-material';
 import axios from 'axios';
 import { useCookies } from "react-cookie";
+import { toast,ToastContainer } from "react-toastify";
+
 
 function ProjectDetails() {
   const { id } = useParams();
@@ -222,7 +218,8 @@ function ProjectDetails() {
       setWorkingHours(0);
     } catch (err) {
       console.error(err);
-      setError("Failed to add developer to project because already exit");
+      toast.error("Failed to add developer to project because already exit")
+      return;
     }
   };
 
@@ -344,7 +341,8 @@ function ProjectDetails() {
       setSelectedTech("");
     } catch (err) {
       console.error("Failed to add technology", err);
-      setError("Failed to add technology to project because already exit ");
+      toast.error("Failed to add technology to project because already exit ")
+      return;
     }
   };
 
@@ -395,7 +393,7 @@ function ProjectDetails() {
   }
 
   if (error) {
-    return (
+    return ( 
       <Container sx={{ mt: 4 }}>
         <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
         <Button startIcon={<ArrowBack />} onClick={() => navigate(-1)} variant="contained">
@@ -422,6 +420,7 @@ function ProjectDetails() {
 
       {/* Header with back button */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+        <ToastContainer/>
         <Button 
           startIcon={<ArrowBack />} 
           onClick={() => navigate(-1)}

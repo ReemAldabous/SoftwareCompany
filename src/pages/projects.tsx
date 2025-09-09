@@ -103,7 +103,7 @@ function Project() {
     <>
       <ResponsiveAppBar />
       <Container maxWidth="xl" sx={{ mt: 12, mb: 4 }}>
-        <Paper elevation={3} sx={{ p: 3, mb: 3 , bgcolor:'#b4cce4ff' }}>
+        <Paper elevation={3} sx={{ p: 3, mb: 3 , bgcolor:'#edf1f4ff' }}>
           <Box 
             display="flex" 
             justifyContent="space-between" 
