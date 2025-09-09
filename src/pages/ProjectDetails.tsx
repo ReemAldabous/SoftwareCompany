@@ -557,7 +557,7 @@ function ProjectDetails() {
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                               <Chip 
                                 icon={<AccessTime fontSize="small" />} 
-                                label={`${task.estimateEffort} hrs`} 
+                                label={`${task.estimateEffort}`} 
                                 size="small" 
                                 variant="outlined" 
                               />
@@ -996,7 +996,7 @@ function ProjectDetails() {
               <TextField
                 type="number"
                 fullWidth
-                label="Estimated Effort (hours)"
+                label="Estimated Effort"
                 value={newTask.estimateEffort}
                 onChange={(e) => setNewTask({...newTask, estimateEffort: parseFloat(e.target.value) || 0})}
                 inputProps={{ min: 0, step: 0.5 }}
